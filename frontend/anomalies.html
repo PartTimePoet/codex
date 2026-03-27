@@ -8,7 +8,21 @@
   <!-- Raleway -->
   <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
 
+  <!-- Add your CSS file -->
   <link rel="stylesheet" href="anomalies.css">
+  <style>
+    /* Minimal styles for demo */
+    .container { display: flex; gap: 20px; padding: 20px; }
+    .anomaly-list { flex: 1; max-width: 50%; }
+    .details-panel { flex: 1; padding: 10px; border-left: 2px solid #ddd; }
+    .anomaly-card { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px; cursor: pointer; transition: 0.2s; }
+    .anomaly-card:hover { background: #f1f1f1; }
+    .anomaly-card.high { border-left: 5px solid red; }
+    .anomaly-card.medium { border-left: 5px solid orange; }
+    .anomaly-card.low { border-left: 5px solid green; }
+    .actions { margin-top: 10px; }
+    .actions button { margin-right: 5px; padding: 5px 10px; }
+  </style>
 </head>
 <body>
 
@@ -43,7 +57,6 @@
 
 <!-- MAIN -->
 <div class="container">
-
   <!-- LEFT: ANOMALY LIST -->
   <div class="anomaly-list" id="anomalyList"></div>
 
@@ -52,9 +65,19 @@
     <h2>Details</h2>
     <p>Select an anomaly to view details</p>
   </div>
-
 </div>
 
+<!-- JS -->
 <script src="anomalies.js"></script>
+<script>
+  // NAVIGATION
+  function goToUserDetails() {
+    window.location.href = "user-details.html";
+  }
+
+  function goToSettings() {
+    window.location.href = "settings.html";
+  }
+</script>
 </body>
 </html>
