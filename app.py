@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import json
 
 from utils.profile_builder import build_profiles
@@ -55,3 +56,33 @@ with open("output/alerts.json", "w") as outfile:
     json.dump(all_results, outfile, indent=4)
 
 print(json.dumps(all_results, indent=4))
+=======
+from flask import Flask, jsonify
+from risk_engine import merge_events, calculate_risk, build_timeline, generate_explanation
+from sample_data import rule_events, honeypot_events
+import json
+
+app = Flask(__name__)
+
+@app.route("/analyze", methods=["GET"])
+def analyze():
+    events = merge_events(rule_events, honeypot_events)
+    risk = calculate_risk(events)
+    timeline = build_timeline(events)
+    explanation = generate_explanation(risk)
+
+    output = {
+        "risk_score": risk,
+        "timeline": timeline,
+        "explanation": explanation
+    }
+
+    # Save for dashboard
+    with open("output.json", "w") as f:
+        json.dump(output, f, indent=4)
+
+    return jsonify(output)
+
+if __name__ == "__main__":
+    app.run(debug=True)
+>>>>>>> 0fbd5765d30f3dc4f9647c6ca4725dcc78821c21

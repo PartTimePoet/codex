@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sentinel – Login</title>
+
+  <!-- Raleway Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="loginstyle.css" />
+</head>
+<body>
+
+<script>
+  const token = localStorage.getItem("token");
+  if (token) {
+    window.location.href = "dashboard.html";
+  }
+</script>
+
+<div class="login-container">
+
+  <!-- LOGO -->
+  <div class="logo-section">
+    <img src="assets/logo.png" alt="Sentinel Logo" class="logo-icon" />
+    <h1 class="logo-text">SENTINEL</h1>
+    <p class="tagline">User Activity Monitoring & Security</p>
+  </div>
+
+  <!-- FORM -->
+  <form class="login-form" id="loginForm">
+
+    <label>Email Address</label>
+    <input type="email" id="email" placeholder="Enter your email" required />
+
+    <label>Password</label>
+    <input type="password" id="password" placeholder="Enter your password" required />
+
+    <button type="submit" class="login-btn">Sign In</button>
+
+  </form>
+
+  <!-- LINKS -->
+  <div class="links">
+    <a href="pwdreset.html">Forgot password?</a>
+  </div>
+
+</div>
+
+<script src="loginscript.js"></script>
+</body>
+</html>
