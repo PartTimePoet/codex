@@ -1,0 +1,90 @@
+[
+    {
+        "user": "Alice",
+        "timestamp": "2026-03-27 22:31:56",
+        "alerts": [
+            "Unusual login hour"
+        ],
+        "risk_score": 15,
+        "risk_level": "Low"
+    },
+    {
+        "user": "Bob",
+        "timestamp": "2026-03-27 22:31:56",
+        "alerts": [],
+        "risk_score": 0,
+        "risk_level": "Low"
+    },
+    {
+        "user": "Charlie",
+        "timestamp": "2026-03-27 22:31:56",
+        "alerts": [
+            "Unusual login hour"
+        ],
+        "risk_score": 15,
+        "risk_level": "Low"
+    },
+    {
+        "user": "David",
+        "timestamp": "2026-03-27 22:31:56",
+        "alerts": [
+            "Unusual login hour"
+        ],
+        "risk_score": 15,
+        "risk_level": "Low"
+    },
+    {
+        "user": "Eva",
+        "timestamp": "2026-03-27 22:31:56",
+        "alerts": [],
+        "risk_score": 0,
+        "risk_level": "Low"
+    },
+    {
+        "user": "Frank",
+        "timestamp": "2026-03-27 22:31:56",
+        "alerts": [
+            "Unusual login hour"
+        ],
+        "risk_score": 15,
+        "risk_level": "Low"
+    },
+    {
+        "user": "Grace",
+        "timestamp": "2026-03-27 22:31:56",
+        "alerts": [
+            "New country login detected",
+            "Too many failed login attempts",
+            "New browser detected",
+            "Unusual login hour"
+        ],
+        "risk_score": 75,
+        "risk_level": "High"
+    },
+    {
+        "user": "Hank",
+        "timestamp": "2026-03-27 22:31:56",
+        "alerts": [
+            "New country login detected",
+            "Too many failed login attempts",
+            "New browser detected",
+            "Unusual login hour"
+        ],
+        "risk_score": 75,
+        "risk_level": "High"
+    },
+    {
+        "user": "Ivy",
+        "timestamp": "2026-03-27 22:31:56",
+        "alerts": [],
+        "risk_score": 0,
+        "risk_level": "Low"
+    },
+    {
+        "user": "Jack",
+        "timestamp": "2026-03-27 22:31:56",
+        "alerts": [],
+        "risk_score": 0,
+        "risk_level": "Low"
+    }
+]

@@ -1,0 +1,92 @@
+[
+    {
+        "user": "Alice",
+        "timestamp": "2026-03-27 22:31:56",
+        "country": "Singapore",
+        "browser": "Chrome",
+        "login_hour": 18,
+        "resource": "project_data",
+        "failed_logins": 2
+    },
+    {
+        "user": "Bob",
+        "timestamp": "2026-03-27 22:31:56",
+        "country": "Osaka",
+        "browser": "Firefox",
+        "login_hour": 9,
+        "resource": "confidential_doc",
+        "failed_logins": 1
+    },
+    {
+        "user": "Charlie",
+        "timestamp": "2026-03-27 22:31:56",
+        "country": "Tokyo",
+        "browser": "Safari",
+        "login_hour": 20,
+        "resource": "file1",
+        "failed_logins": 2
+    },
+    {
+        "user": "David",
+        "timestamp": "2026-03-27 22:31:56",
+        "country": "Singapore",
+        "browser": "Chrome",
+        "login_hour": 20,
+        "resource": "file1",
+        "failed_logins": 1
+    },
+    {
+        "user": "Eva",
+        "timestamp": "2026-03-27 22:31:56",
+        "country": "London",
+        "browser": "Firefox",
+        "login_hour": 13,
+        "resource": "project_data",
+        "failed_logins": 1
+    },
+    {
+        "user": "Frank",
+        "timestamp": "2026-03-27 22:31:56",
+        "country": "Singapore",
+        "browser": "Safari",
+        "login_hour": 19,
+        "resource": "file2",
+        "failed_logins": 2
+    },
+    {
+        "user": "Grace",
+        "timestamp": "2026-03-27 22:31:56",
+        "country": "New York",
+        "browser": "Chrome",
+        "login_hour": 17,
+        "resource": "confidential_doc",
+        "failed_logins": 10
+    },
+    {
+        "user": "Hank",
+        "timestamp": "2026-03-27 22:31:56",
+        "country": "London",
+        "browser": "Safari",
+        "login_hour": 17,
+        "resource": "file2",
+        "failed_logins": 6
+    },
+    {
+        "user": "Ivy",
+        "timestamp": "2026-03-27 22:31:56",
+        "country": "London",
+        "browser": "Chrome",
+        "login_hour": 16,
+        "resource": "admin_panel",
+        "failed_logins": 2
+    },
+    {
+        "user": "Jack",
+        "timestamp": "2026-03-27 22:31:56",
+        "country": "New York",
+        "browser": "Safari",
+        "login_hour": 17,
+        "resource": "project_data",
+        "failed_logins": 1
+    }
+]

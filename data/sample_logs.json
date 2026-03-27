@@ -1,0 +1,20 @@
+[
+  {
+    "user": "Alice",
+    "country": "Germany",
+    "login_hour": 3,
+    "browser": "Firefox",
+    "resource": "/admin/payroll.xlsx",
+    "failed_logins": 8,
+    "timestamp": "2026-03-27 03:00:00"
+  },
+  {
+    "user": "Bob",
+    "country": "Osaka",
+    "login_hour": 19,
+    "browser": "Firefox",
+    "resource": "/sales",
+    "failed_logins": 1,
+    "timestamp": "2026-03-27 19:00:00"
+  }
+]
