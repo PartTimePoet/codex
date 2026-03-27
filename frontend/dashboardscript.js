@@ -1,37 +1,41 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-  // LOGOUT
-  const logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.onclick = () => {
-      localStorage.clear();
-      window.location.href = "login.html";
-    };
-  }
-
-  // DROPDOWN
+// NAVBAR DROPDOWN
   const icon = document.getElementById("profileIcon");
   const dropdown = document.getElementById("profileDropdown");
 
-  if (icon && dropdown) {
-    icon.onclick = () => dropdown.classList.toggle("show");
+  icon.onclick = () => dropdown.classList.toggle("show");
 
-    window.addEventListener("click", (e) => {
-      if (!icon.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.remove("show");
-      }
-    });
-  }
+  window.onclick = (e) => {
+    if (!icon.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.remove("show");
+    }
+  };
 
-  // ✅ PROFILE CARD CLICK (THIS IS THE FIX)
+  // LOGOUT
+  document.getElementById("logoutBtn").onclick = () => {
+    localStorage.clear();
+    window.location.href = "login.html";
+  };
+
+});
+
+// NAVIGATION
+function goToUserDetails() {
+  window.location.href = "user-details.html";
+}
+
+function goToSettings() {
+  window.location.href = "settings.html";
+}
+
+  // ✅ PROFILE CARD CLICK (FIXED)
   const profileCard = document.getElementById("profileCard");
 
   if (profileCard) {
     profileCard.addEventListener("click", () => {
       window.location.href = "user-details.html";
     });
-  } else {
-    console.error("profileCard NOT FOUND");
   }
 
   // RISK SCORE
@@ -53,5 +57,3 @@ document.addEventListener("DOMContentLoaded", function () {
       text.innerText = "High risk";
     }
   }
-
-});
