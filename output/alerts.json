@@ -1,7 +1,14 @@
 [
     {
         "user": "Alice",
-        "timestamp": "2026-03-27 22:57:20",
+        "timestamp": "2026-03-27 23:43:43",
+        "alerts": [],
+        "risk_score": 0,
+        "risk_level": "Low"
+    },
+    {
+        "user": "Bob",
+        "timestamp": "2026-03-27 23:43:43",
         "alerts": [
             "Unusual login hour"
         ],
@@ -9,8 +16,27 @@
         "risk_level": "Low"
     },
     {
-        "user": "Bob",
-        "timestamp": "2026-03-27 22:57:20",
+        "user": "Charlie",
+        "timestamp": "2026-03-27 23:43:43",
+        "alerts": [
+            "Unusual login hour"
+        ],
+        "risk_score": 15,
+        "risk_level": "Low"
+    },
+    {
+        "user": "David",
+        "timestamp": "2026-03-27 23:43:43",
+        "alerts": [
+            "Too many failed login attempts",
+            "New browser detected"
+        ],
+        "risk_score": 30,
+        "risk_level": "Low"
+    },
+    {
+        "user": "Eva",
+        "timestamp": "2026-03-27 23:43:43",
         "alerts": [
             "New country login detected",
             "Too many failed login attempts",
@@ -21,75 +47,47 @@
         "risk_level": "High"
     },
     {
-        "user": "Charlie",
-        "timestamp": "2026-03-27 22:57:20",
-        "alerts": [
-            "Unusual login hour"
-        ],
-        "risk_score": 15,
-        "risk_level": "Low"
-    },
-    {
-        "user": "David",
-        "timestamp": "2026-03-27 22:57:20",
-        "alerts": [
-            "Unusual login hour"
-        ],
-        "risk_score": 15,
-        "risk_level": "Low"
-    },
-    {
-        "user": "Eva",
-        "timestamp": "2026-03-27 22:57:20",
-        "alerts": [
-            "Unusual login hour"
-        ],
-        "risk_score": 15,
-        "risk_level": "Low"
-    },
-    {
         "user": "Frank",
-        "timestamp": "2026-03-27 22:57:20",
-        "alerts": [
-            "Unusual login hour"
-        ],
-        "risk_score": 15,
-        "risk_level": "Low"
-    },
-    {
-        "user": "Grace",
-        "timestamp": "2026-03-27 22:57:20",
+        "timestamp": "2026-03-27 23:43:43",
         "alerts": [],
         "risk_score": 0,
         "risk_level": "Low"
     },
     {
+        "user": "Grace",
+        "timestamp": "2026-03-27 23:43:43",
+        "alerts": [
+            "Unusual login hour"
+        ],
+        "risk_score": 15,
+        "risk_level": "Low"
+    },
+    {
         "user": "Hank",
-        "timestamp": "2026-03-27 22:57:20",
+        "timestamp": "2026-03-27 23:43:43",
         "alerts": [
-            "Unusual login hour"
-        ],
-        "risk_score": 15,
-        "risk_level": "Low"
-    },
-    {
-        "user": "Ivy",
-        "timestamp": "2026-03-27 22:57:20",
-        "alerts": [
-            "Unusual login hour"
-        ],
-        "risk_score": 15,
-        "risk_level": "Low"
-    },
-    {
-        "user": "Jack",
-        "timestamp": "2026-03-27 22:57:20",
-        "alerts": [
+            "New country login detected",
             "Too many failed login attempts",
             "New browser detected",
             "Unusual login hour"
         ],
-        "risk_score": 45,
-        "risk_level": "Medium"
+        "risk_score": 75,
+        "risk_level": "High"
+    },
+    {
+        "user": "Ivy",
+        "timestamp": "2026-03-27 23:43:43",
+        "alerts": [],
+        "risk_score": 0,
+        "risk_level": "Low"
+    },
+    {
+        "user": "Jack",
+        "timestamp": "2026-03-27 23:43:43",
+        "alerts": [
+            "Unusual login hour"
+        ],
+        "risk_score": 15,
+        "risk_level": "Low"
     }
 ]
