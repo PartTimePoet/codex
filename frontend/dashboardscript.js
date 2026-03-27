@@ -1,6 +1,8 @@
+// dashboard.js
+
 document.addEventListener("DOMContentLoaded", function () {
 
-// NAVBAR DROPDOWN
+  // ---------------- NAVBAR DROPDOWN ----------------
   const icon = document.getElementById("profileIcon");
   const dropdown = document.getElementById("profileDropdown");
 
@@ -18,9 +20,19 @@ document.addEventListener("DOMContentLoaded", function () {
     window.location.href = "login.html";
   };
 
+  // ---------------- PROFILE CARD CLICK ----------------
+  const profileCard = document.getElementById("profileCard");
+  if (profileCard) {
+    profileCard.addEventListener("click", () => {
+      window.location.href = "user-details.html";
+    });
+  }
+
+  // ---------------- FETCH BACKEND DATA ----------------
+  fetchRiskData();  // call backend on page load
 });
 
-// NAVIGATION
+// ---------------- NAVIGATION ----------------
 function goToUserDetails() {
   window.location.href = "user-details.html";
 }
@@ -29,17 +41,23 @@ function goToSettings() {
   window.location.href = "settings.html";
 }
 
-  // ✅ PROFILE CARD CLICK (FIXED)
-  const profileCard = document.getElementById("profileCard");
+// ---------------- FETCH AND UPDATE FUNCTIONS ----------------
+async function fetchRiskData() {
+  try {
+    // Replace with your backend API URL
+    const response = await fetch("http://127.0.0.1:5000/analyze"); 
+    const data = await response.json();
 
-  if (profileCard) {
-    profileCard.addEventListener("click", () => {
-      window.location.href = "user-details.html";
-    });
+    updateRiskCircle(data.risk_score, data.explanation);
+    updateTimeline(data.timeline);
+
+  } catch (error) {
+    console.error("Error fetching risk data:", error);
   }
+}
 
-  // RISK SCORE
-  const risk = 65;
+// Update the risk circle
+function updateRiskCircle(risk, explanation) {
   const circle = document.getElementById("riskCircle");
   const text = document.getElementById("riskText");
 
@@ -56,4 +74,26 @@ function goToSettings() {
       circle.style.background = "red";
       text.innerText = "High risk";
     }
+
+    // Optional: explanation display
+    const explanationDiv = document.getElementById("riskExplanation");
+    if (explanationDiv) {
+      explanationDiv.innerText = explanation;
+    }
   }
+}
+
+// Update the threat timeline
+function updateTimeline(timeline) {
+  const timelineDiv = document.getElementById("timeline");
+  if (!timelineDiv) return;
+
+  // Clear old timeline
+  timelineDiv.innerHTML = "";
+
+  timeline.forEach(event => {
+    const p = document.createElement("p");
+    p.innerText = event; // timeline items should already be strings like "09:02 – 5 failed logins"
+    timelineDiv.appendChild(p);
+  });
+}
