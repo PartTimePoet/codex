@@ -144,6 +144,16 @@ body {
   transform: translateY(-4px);
 }
 
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clickable-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(34, 211, 238, 0.2);
+}
+
 /* PROFILE PIC */
 .profile-pic {
   width: 80px;
