@@ -1,0 +1,9 @@
+{
+    "risk_score": 100,
+    "timeline": [
+        "09:02 \u2013 5 failed attempts",
+        "09:05 \u2013 Login from Germany",
+        "09:07 \u2013 Accessed /admin-secret"
+    ],
+    "explanation": "\ud83d\udea8 Critical threat detected. Likely attacker behavior."
+}

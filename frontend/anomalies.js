@@ -1,68 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  // SAMPLE DATA
-  const anomalies = [
-    {
-      type: "Login",
-      user: "Employee_01",
-      location: "Brazil",
-      time: "10:45 AM",
-      severity: "high",
-      reason: "Unusual location login"
-    },
-    {
-      type: "File Access",
-      user: "Employee_02",
-      location: "India",
-      time: "11:10 AM",
-      severity: "medium",
-      reason: "Accessed sensitive file"
-    },
-    {
-      type: "Login",
-      user: "Employee_03",
-      location: "Russia",
-      time: "12:00 PM",
-      severity: "high",
-      reason: "Multiple failed attempts"
-    }
-  ];
-
   const list = document.getElementById("anomalyList");
   const details = document.getElementById("detailsPanel");
-
-  // RENDER ANOMALIES
-  anomalies.forEach((a, index) => {
-    const div = document.createElement("div");
-    div.className = `anomaly-card ${a.severity}`;
-
-    div.innerHTML = `
-      <h3>⚠ ${a.type} Anomaly</h3>
-      <p>User: ${a.user}</p>
-      <p>Location: ${a.location}</p>
-      <p>Time: ${a.time}</p>
-      <p>Severity: ${a.severity.toUpperCase()}</p>
-    `;
-
-    div.addEventListener("click", () => {
-      details.innerHTML = `
-        <h2>🔍 Anomaly Details</h2>
-        <p><strong>Type:</strong> ${a.type}</p>
-        <p><strong>User:</strong> ${a.user}</p>
-        <p><strong>Location:</strong> ${a.location}</p>
-        <p><strong>Time:</strong> ${a.time}</p>
-        <p><strong>Severity:</strong> ${a.severity}</p>
-        <p><strong>Reason:</strong> ${a.reason}</p>
-
-        <div class="actions">
-          <button class="confirm">✅ Confirm</button>
-          <button class="report">❌ Report</button>
-        </div>
-      `;
-    });
-
-    list.appendChild(div);
-  });
 
   // NAVBAR DROPDOWN
   const icon = document.getElementById("profileIcon");
@@ -76,19 +15,62 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // LOGOUT
   document.getElementById("logoutBtn").onclick = () => {
     localStorage.clear();
     window.location.href = "login.html";
   };
 
+  // NAVIGATION
+  window.goToUserDetails = () => window.location.href = "user-details.html";
+  window.goToSettings = () => window.location.href = "settings.html";
+
+  // Render anomalies dynamically
+  async function updateAnomalies() {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/analyze");
+      const data = await response.json();
+
+      // Clear existing list
+      list.innerHTML = "";
+
+      // Use timeline events as anomalies
+      data.timeline.forEach((eventStr, index) => {
+        // Determine severity from risk contribution
+        let severity = "low";
+        if (data.risk_score > 80) severity = "high";
+        else if (data.risk_score > 50) severity = "medium";
+
+        const div = document.createElement("div");
+        div.className = `anomaly-card ${severity}`;
+        div.innerHTML = `
+          <h3>⚠ Anomaly Detected</h3>
+          <p>${eventStr}</p>
+          <p>Severity: ${severity.toUpperCase()}</p>
+        `;
+
+        div.addEventListener("click", () => {
+          details.innerHTML = `
+            <h2>🔍 Anomaly Details</h2>
+            <p><strong>Event:</strong> ${eventStr}</p>
+            <p><strong>Severity:</strong> ${severity}</p>
+            <p><strong>Explanation:</strong> ${data.explanation}</p>
+            <div class="actions">
+              <button class="confirm">✅ Confirm</button>
+              <button class="report">❌ Report</button>
+            </div>
+          `;
+        });
+
+        list.appendChild(div);
+      });
+
+    } catch (error) {
+      console.error("Error fetching anomalies:", error);
+    }
+  }
+
+  // Initial fetch and refresh every 5 seconds
+  updateAnomalies();
+  setInterval(updateAnomalies, 5000);
+
 });
-
-// NAVIGATION
-function goToUserDetails() {
-  window.location.href = "user-details.html";
-}
-
-function goToSettings() {
-  window.location.href = "settings.html";
-}
