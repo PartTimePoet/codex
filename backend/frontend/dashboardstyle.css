@@ -1,0 +1,220 @@
+/* RESET */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/* BODY */
+body {
+  background: #1E1E1E;
+  font-family: 'Raleway', sans-serif;
+  color: white;
+}
+
+/* NAVBAR */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 60px;
+  background: #1E1E1E;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* LEFT */
+.logo {
+  width: 55px;
+}
+
+/* CENTER NAV */
+.nav-center {
+  display: flex;
+  gap: 60px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-center a {
+  text-decoration: none;
+  color: #67e8f9;
+  font-size: 18px;
+  transition: 0.3s;
+}
+
+.nav-center a:hover {
+  color: #22d3ee;
+}
+
+.nav-center .active {
+  color: #22d3ee;
+  font-weight: 600;
+}
+
+/* RIGHT */
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+/* PROFILE */
+.profile-wrapper {
+  position: relative;
+}
+
+.profile-icon {
+  font-size: 24px;
+  cursor: pointer;
+  color: #a78bfa;
+}
+
+/* DROPDOWN (ANIMATED) */
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background: #2a2a2a;
+  border-radius: 8px;
+  padding: 10px;
+  min-width: 160px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+
+  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.profile-dropdown.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.profile-dropdown button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.profile-dropdown button:hover {
+  background: #3a3a3a;
+  border-radius: 4px;
+}
+
+/* GREETING */
+.greeting {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.greeting h1 {
+  font-size: 60px;
+  font-weight: 500;
+}
+
+.username {
+  color: #22d3ee;
+}
+
+/* DASHBOARD GRID */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 40px;
+}
+
+/* CARD */
+.card {
+  background: #2a2a2a;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.clickable-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.clickable-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(34, 211, 238, 0.2);
+}
+
+/* PROFILE PIC */
+.profile-pic {
+  width: 80px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 2px solid #22d3ee;
+}
+
+/* ALERT CARD */
+.alert {
+  border-left: 4px solid #ef4444;
+}
+
+/* BUTTONS */
+.btn {
+  display: block;
+  margin: 8px 0;
+  padding: 10px;
+  background: #22d3ee;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: black;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  background: #67e8f9;
+}
+
+.btn.danger {
+  background: #ef4444;
+  color: white;
+}
+
+.btn.danger:hover {
+  background: #dc2626;
+}
+
+/* RISK SCORE */
+.risk-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 10px auto;
+  font-weight: bold;
+  color: white;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .nav-center {
+    gap: 30px;
+  }
+
+  .greeting h1 {
+    font-size: 40px;
+  }
+}
