@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // LOGOUT
   document.getElementById("logoutBtn").onclick = () => {
     localStorage.clear();
     window.location.href = "login.html";
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.goToUserDetails = () => window.location.href = "user-details.html";
   window.goToSettings = () => window.location.href = "settings.html";
 
-  // Render anomalies dynamically
+  // Render anomalies dynamically from backend
   async function updateAnomalies() {
     try {
       const response = await fetch("http://127.0.0.1:5000/analyze");
@@ -33,8 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Clear existing list
       list.innerHTML = "";
 
-      // Use timeline events as anomalies
-      data.timeline.forEach((eventStr, index) => {
+      data.timeline.forEach((event) => {
         // Determine severity from risk contribution
         let severity = "low";
         if (data.risk_score > 80) severity = "high";
@@ -44,14 +44,16 @@ document.addEventListener("DOMContentLoaded", () => {
         div.className = `anomaly-card ${severity}`;
         div.innerHTML = `
           <h3>⚠ Anomaly Detected</h3>
-          <p>${eventStr}</p>
+          <p><strong>Time:</strong> ${event.timestamp}</p>
+          <p><strong>Event:</strong> ${event.details}</p>
           <p>Severity: ${severity.toUpperCase()}</p>
         `;
 
         div.addEventListener("click", () => {
           details.innerHTML = `
             <h2>🔍 Anomaly Details</h2>
-            <p><strong>Event:</strong> ${eventStr}</p>
+            <p><strong>Time:</strong> ${event.timestamp}</p>
+            <p><strong>Event:</strong> ${event.details}</p>
             <p><strong>Severity:</strong> ${severity}</p>
             <p><strong>Explanation:</strong> ${data.explanation}</p>
             <div class="actions">
