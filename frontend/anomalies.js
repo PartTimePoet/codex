@@ -3,39 +3,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const list = document.getElementById("anomalyList");
   const details = document.getElementById("detailsPanel");
 
-  // NAVBAR DROPDOWN
-  const icon = document.getElementById("profileIcon");
-  const dropdown = document.getElementById("profileDropdown");
+  const username = localStorage.getItem("username") || "Alice";
 
-  icon.onclick = () => dropdown.classList.toggle("show");
-
-  window.onclick = (e) => {
-    if (!icon.contains(e.target) && !dropdown.contains(e.target)) {
-      dropdown.classList.remove("show");
-    }
-  };
-
-  // LOGOUT
-  document.getElementById("logoutBtn").onclick = () => {
-    localStorage.clear();
-    window.location.href = "login.html";
-  };
-
-  // NAVIGATION
-  window.goToUserDetails = () => window.location.href = "user-details.html";
-  window.goToSettings = () => window.location.href = "settings.html";
-
-  // Render anomalies dynamically from backend
   async function updateAnomalies() {
     try {
-      const response = await fetch("http://127.0.0.1:5000/analyze");
+      const response = await fetch(`http://127.0.0.1:5000/analyze?user=${username}`);
       const data = await response.json();
 
-      // Clear existing list
+      if (!data.timeline) return;
+
       list.innerHTML = "";
 
-      data.timeline.forEach((event) => {
-        // Determine severity from risk contribution
+      data.timeline.forEach((eventStr, index) => {
+        // Determine severity from overall risk
         let severity = "low";
         if (data.risk_score > 80) severity = "high";
         else if (data.risk_score > 50) severity = "medium";
@@ -44,16 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
         div.className = `anomaly-card ${severity}`;
         div.innerHTML = `
           <h3>⚠ Anomaly Detected</h3>
-          <p><strong>Time:</strong> ${event.timestamp}</p>
-          <p><strong>Event:</strong> ${event.details}</p>
+          <p>${eventStr}</p>
           <p>Severity: ${severity.toUpperCase()}</p>
         `;
 
         div.addEventListener("click", () => {
           details.innerHTML = `
             <h2>🔍 Anomaly Details</h2>
-            <p><strong>Time:</strong> ${event.timestamp}</p>
-            <p><strong>Event:</strong> ${event.details}</p>
+            <p><strong>Event:</strong> ${eventStr}</p>
             <p><strong>Severity:</strong> ${severity}</p>
             <p><strong>Explanation:</strong> ${data.explanation}</p>
             <div class="actions">
@@ -71,8 +49,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Initial fetch and refresh every 5 seconds
   updateAnomalies();
   setInterval(updateAnomalies, 5000);
+
+  // NAVBAR & LOGOUT
+  const icon = document.getElementById("profileIcon");
+  const dropdown = document.getElementById("profileDropdown");
+  icon.onclick = () => dropdown.classList.toggle("show");
+  window.onclick = (e) => {
+    if (!icon.contains(e.target) && !dropdown.contains(e.target)) {
+      dropdown.classList.remove("show");
+    }
+  };
+  document.getElementById("logoutBtn").onclick = () => {
+    localStorage.clear();
+    window.location.href = "login.html";
+  };
+
+  // Navigation
+  window.goToUserDetails = () => window.location.href = "user-details.html";
+  window.goToSettings = () => window.location.href = "settings.html";
 
 });
