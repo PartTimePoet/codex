@@ -1,33 +1,33 @@
-const form = document.getElementById("loginForm");
+document.getElementById("loginBtn").addEventListener("click", () => {
+    const email = document.getElementById("emailInput").value.trim();
+    const password = document.getElementById("passwordInput").value.trim();
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  try {
-    const res = await fetch("http://localhost:8000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ email, password })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert(data.message || "Login failed");
-      return;
+    // Basic validation
+    if (!email || !password) {
+        alert("Please enter both email and password.");
+        return;
     }
 
-    localStorage.setItem("token", data.token);
+    // Example: check against your users.json or backend
+    fetch("http://localhost:5000/login", { // You can create a /login route
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.success){
+            // Store email in sessionStorage for dashboard
+            sessionStorage.setItem("email", email);
 
-    window.location.href = "dashboard.html";
-
-  } catch (err) {
-    console.error(err);
-    alert("Server error");
-  }
+            // Redirect to dashboard
+            window.location.href = "dashboard.html";
+        } else {
+            alert("Invalid email or password.");
+        }
+    })
+    .catch(err => {
+        console.error("Login error:", err);
+        alert("Error connecting to server.");
+    });
 });

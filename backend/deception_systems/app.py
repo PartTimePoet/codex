@@ -1,139 +1,115 @@
-from flask import Flask, request, redirect, url_for, render_template_string, jsonify, send_file
-import datetime
-import os
-from openpyxl import Workbook
+import json
 
+# Load login credentials
+def load_users():
+    with open("users.json") as f:
+        return json.load(f)
 
-from flask import render_template
-import random
+# Check login
+def check_login(email, password):
+    users = load_users()
+    for u in users:
+        if u["email"] == email and u["password"] == password:
+            return True
+    return False
 
+# Load historical logs
+def load_historical_logs():
+    with open("historical_logs.json") as f:
+        return json.load(f)
 
-app = Flask(__name__)   # 👈 THIS MUST BE BEFORE ANY @app.route
+# Filter logs for a specific user (Alice)
+def get_user_logs(email):
+    logs = load_historical_logs()
+    return [e for e in logs if e["user"] == email]
 
-
-@app.route("/admin-secret")
-def fake_admin():
-    trap_alert("Fake Admin Page Access")
-
-
-    hacker_score = 75
-
-
-    return render_template(
-        "honeypot.html",
-        ip=request.remote_addr,
-        hacker_score=hacker_score,
-        risk_percent=(hacker_score / 80) * 100,
-        user_agent=request.headers.get("User-Agent", "Unknown"),
-        session_id="TRACKED",
-        attempt_count=request.cookies.get("trap_triggered", "1"),
-        incident_id=f"INC-{random.randint(10000,99999)}"
-    )
-
-
-
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from pathlib import Path
+import json
+from risk_engine import merge_events, calculate_risk, build_timeline, generate_explanation
+from simulator import current_rule_events, current_honeypot_events
+from rules.all_rules import apply_all_rules  # your person1 rules
 
 app = Flask(__name__)
+CORS(app)
 
+# JSON files
+DATA_DIR = Path(__file__).parent / "data"
+HISTORICAL_FILE = DATA_DIR / "historical_logs.json"
+NEW_FILE = DATA_DIR / "new_logs.json"
 
-# 🚨 Trap alert function
-def trap_alert(trap_name):
-    ip = request.remote_addr
-    time = datetime.datetime.now()
+MAX_RISK_SCORE = 80  # for normalization
 
+# ---------------------- Helper functions ----------------------
+def load_json_events(file_path):
+    try:
+        with open(file_path, "r") as f:
+            return json.load(f)
+    except Exception as e:
+        print(f"⚠ Failed to load {file_path.name}: {e}")
+        return []
 
-    print("\n🚨 HONEYPOT ALERT 🚨")
-    print(f"Trap Triggered: {trap_name}")
-    print(f"IP Address: {ip}")
-    print(f"Time: {time}")
-    print("Risk Score: HIGH 🔥\n")
+def json_to_events(json_logs):
+    """Convert JSON logs to standard events for risk engine"""
+    events = []
+    for e in json_logs:
+        desc = f"{e['user']} logged in from {e['country']} using {e['browser']} at hour {e['login_hour']} accessing {e['resource']} (failed: {e['failed_logins']})"
+        events.append({
+            "type": "rule",  # JSON logs treated as rule events
+            "description": desc,
+            "timestamp": e["timestamp"],
+            "user": e["user"]
+        })
+    return events
 
+# ---------------------- New /analyze route ----------------------
+@app.route("/analyze", methods=["POST"])
+def analyze():
+    try:
+        data = request.json
+        email = data.get("email")  # get logged-in user email
 
-# 🏠 Normal homepage
-@app.route("/")
-def home():
-    return """
-    <h2>Welcome 👋</h2>
-    <p>Nothing to see here...</p>
-    """
+        if not email:
+            return jsonify({"error": "Email is required"}), 400
 
+        # Load logs
+        historical_events = json_to_events(load_json_events(HISTORICAL_FILE))
+        new_events = json_to_events(load_json_events(NEW_FILE))
 
-# 🚨 Suspicious behavior trigger → redirect to honeypot
-@app.route("/suspicious")
-def suspicious():
-    trap_alert("Suspicious Activity Detected")
-    return redirect(url_for('fake_admin'))
+        # Apply rules to simulator events
+        new_rule_events = apply_all_rules(current_rule_events)
 
+        # Merge all events
+        combined_rule_events = current_rule_events + new_rule_events + historical_events + new_events
+        all_events = merge_events(combined_rule_events, current_honeypot_events)
 
-# 🪤 Fake admin login page
-@app.route("/admin-secret", methods=["GET", "POST"])
-def fake_admin():
-    trap_alert("Fake Admin Page Access")
+        # Filter events for the logged-in user only
+        user_events = [e for e in all_events if e.get("user") == email]
 
+        if not user_events:
+            return jsonify({"message": "No events found for this user", "risk_score": 0, "risk_percent": 0, "timeline": [], "explanation": ""})
 
-    fake_html = """
-    <html>
-    <head>
-        <title>Admin Login</title>
-    </head>
-    <body style="font-family: Arial; text-align: center; margin-top: 100px;">
-        <h2>🔐 Admin Panel</h2>
-        <form method="POST">
-            <input type="text" name="username" placeholder="Username" /><br><br>
-            <input type="password" name="password" placeholder="Password" /><br><br>
-            <button type="submit">Login</button>
-        </form>
-    </body>
-    </html>
-    """
+        # Calculate risk & timeline
+        raw_risk = calculate_risk(user_events)
+        risk_percent = min(max((raw_risk / MAX_RISK_SCORE) * 100, 0), 100)
+        timeline = build_timeline(user_events)
+        explanation = generate_explanation(raw_risk)
 
+        # DEBUG
+        print(f"🟢 User: {email}, Total events: {len(user_events)}, Risk: {raw_risk}, Risk%: {risk_percent}")
 
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+        return jsonify({
+            "risk_score": raw_risk,
+            "risk_percent": round(risk_percent, 2),
+            "timeline": timeline,
+            "explanation": explanation
+        })
 
+    except Exception as e:
+        print(f"❌ Error in /analyze: {e}")
+        return jsonify({"error": str(e)}), 500
 
-        print("🎯 CREDENTIAL TRAP HIT 🎯")
-        print(f"Username: {username}")
-        print(f"Password: {password}\n")
-
-
-        return "Login failed ❌"
-
-
-    return render_template_string(fake_html)
-
-
-# 💰 Honeypot file (fake salary data)
-@app.route("/salary_data.xlsx")
-def honeypot_file():
-    trap_alert("Honeypot File Access - salary_data.xlsx")
-
-
-    file_path = "fake_salary_data.xlsx"
-
-
-    # Create real Excel file if not exists
-    if not os.path.exists(file_path):
-        wb = Workbook()
-        ws = wb.active
-        ws.append(["Employee", "Salary"])
-        ws.append(["John", 100000])
-        ws.append(["Alice", 120000])
-        ws.append(["Bob", 90000])
-        wb.save(file_path)
-
-
-    return send_file(file_path, as_attachment=True)
-
-
-# 🎛️ Fake API endpoint
-@app.route("/api/hidden")
-def fake_api():
-    trap_alert("Fake API Endpoint Access")
-    return jsonify({"error": "Unauthorized access ❌"})
-
-
-# ▶️ Run server
 if __name__ == "__main__":
+    print("🔹 Starting Sentinel backend...")
     app.run(debug=True)

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+                                                                                                                                                                                                                                                                                      
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -43,7 +43,11 @@
 
 <!-- DASHBOARD -->
 <div class="dashboard">
-
+    <div class="card">
+  <h3>User Anomalies</h3>
+  <div id="anomalyList"></div>
+  <div id="detailsPanel" style="margin-top:10px;"></div>
+ </div>
   <!-- USER PROFILE (CLICKABLE) -->
   <div class="card clickable-card" id="profileCard">
     <h3>User Profile</h3>
@@ -127,6 +131,16 @@
     <p>Status: No active tickets</p>
   </div>
 
+</div>
+<!-- Anomalies Section -->
+<div class="card">
+  <h3>User Anomalies</h3>
+  <div id="anomalyList">
+    <!-- JS will populate anomalies here -->
+  </div>
+  <div id="detailsPanel">
+    <!-- JS will populate anomaly details when clicked -->
+  </div>
 </div>
 
 <!-- DASHBOARD JS -->
